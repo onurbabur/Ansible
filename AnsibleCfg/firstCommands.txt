@@ -1,0 +1,23 @@
+#İlk testimizi Ansible modullerinden olan pingi kullanarak yapacağız.
+ansible all --key-file ~/.ssh/ansible -i inventory -m ping
+
+#Dosyamızın adı ansible.cfg olacaktır. İlgili cfg dosyası içerisinde aşağıdaki adımları yazabiliriz. inventory yine aynı dizinde bulunan inventory datasını kullanacaksın, private_key_file olarak da key file yolunu gösteriyoruz. 
+ansible all -m ping
+
+
+#Yine bu sistemlerimizin hepsine apt kurulum paketini kullanarak hwinfo uygulamasını kuralım,  –become –ask-become-pass yetkili bir hesap bilgisi gireceğim bana parola sor dedirtiyoruz. Daha kısa hali de –become -K olarak kullanılabilir.
+
+ansible all -m apt -a name=hwinfo --become --ask-become-pass
+
+ansible all -m apt -a name=hwinfo --become -K
+
+ansible all -m apt -a "name=ufw state=latest" --become -K 
+
+ansible all -m apt -a upgrade=dist --become -K 
+
+
+ansible all -m apt -a "name=ufw state=latest" --become -K 
+
+ansible all -m apt -a upgrade=dist --become -K 
+
+
