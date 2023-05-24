@@ -1,0 +1,25 @@
+---
+- name: Upgrade Ubuntu kernel
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Get the current kernel version
+      command: uname -r
+      register: current_kernel
+
+    - name: Upgrade kernel
+      apt:
+        name: linux-image-generic
+        state: latest
+        update_cache: yes
+        autoremove: yes
+        purge: yes
+
+    - name: Reboot if kernel was upgraded
+      reboot:
+      when: "'linux-image-' + current_kernel.stdout not in ansible_facts.packages"
