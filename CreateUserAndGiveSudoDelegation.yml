@@ -1,0 +1,17 @@
+---
+- hosts: all
+  tasks:
+    - name: Add the user onurtest with a specific uid and a primary group of admin
+      ansible.builtin.user:
+        name: onurtest
+        comment: sistemi yonetimi icin kullanılıyor
+        group: sudo
+        password: "{{ 'PASSWORD' | password_hash('sha512') }}"
+        append: yes
+    - name: Allow sudo delegation for onurtest
+      lineinfile:
+        dest: /etc/sudoers
+        state: present
+        regexp: '^%root'
+        line: 'onurtest ALL=(ALL:ALL) ALL'
+        validate: 'visudo -cf %s'
