@@ -1,0 +1,53 @@
+---
+- hosts: all
+  tasks:
+    - name: Copy the Zabbix DEB to remote Servers.
+      become: yes
+      become_method: sudo
+      copy:
+        src: agent-ubuntu-22.deb
+        dest: /tmp/
+        owner: root
+        group: root
+        mode: 0644
+    - name: Install Zabbix REPO on remote servers.
+      become: yes
+      ansible.builtin.apt:
+        deb: /tmp/agent-ubuntu-22.deb
+        state: present
+    - name: Install Zabbix agent
+      become: yes
+      ansible.builtin.apt:
+        name: zabbix-agent
+        state: present
+        update_cache: yes
+    - name: Stop service zabbix-agent
+      become: yes
+      service: 
+        name: zabbix-agent
+        state: stopped
+    - name: Remove zabbix config file
+      become: yes
+      file:
+        path: /etc/zabbix/zabbix_agentd.conf
+        state: absent  
+    - name: Enable Zabbix service
+      command: systemctl enable zabbix-agent
+    - name: Create new zabbix config file from template
+      become: yes
+      template:
+        src: "zabbix_agentd.conf"
+        dest: "/etc/zabbix/zabbix_agentd.conf"
+    - name: Start service zabbix-agent
+      become: yes
+      service:
+        name: zabbix-agent
+        state: started
+    - name: Enable Zabbix service
+      command: systemctl enable zabbix-agent      
+    - name: Check Zabbix service.
+      command: systemctl status zabbix-agent
+      register: service_zabbix_status
+    - name: Report Zabbix Status.
+      debug:
+         var: service_zabbix_status.stdout_lines
