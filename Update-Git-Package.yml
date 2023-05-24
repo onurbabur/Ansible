@@ -1,0 +1,13 @@
+---
+- name: Update Git Package
+  hosts: all
+  become: true
+  tasks:
+    - name: Update package cache
+      apt:
+        update_cache: yes
+
+    - name: Upgrade Git package
+      apt:
+        name: git
+        state: latest
