@@ -1,0 +1,5 @@
+---
+- hosts: all
+  tasks:
+    - name: Remove Trendmicro agent
+      shell: dpkg -r ds-agent
