@@ -1,0 +1,9 @@
+---
+- name: Uninstall prometheus-node-exporter 
+  hosts: all
+  become: true
+  tasks:
+    - name: Remove prometheus-node-exporter  package
+      apt:
+        name: prometheus-node-exporter 
+        state: absent
