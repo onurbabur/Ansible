@@ -1,0 +1,9 @@
+---
+- hosts: all
+  tasks:
+  - name: Update and upgrade apt packages
+    apt:
+      upgrade: dist
+  # Reboot after upgrade
+  - name: Reboot host
+    reboot:
