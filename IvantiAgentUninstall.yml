@@ -1,0 +1,15 @@
+---
+- hosts: all
+  tasks:
+    - name: Copy the SH file to remote Servers.
+      become: yes
+      become_method: sudo
+      copy:
+        src: nixconfig.sh
+        dest: /tmp/
+        owner: root
+        group: root
+        mode: 0755
+      become: yes
+    - name: Install sh scripti
+      shell: /tmp/nixconfig.sh -r all -R
