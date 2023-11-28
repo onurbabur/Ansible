@@ -1,0 +1,7 @@
+---
+- name: Zaman Dilimi Ayarı
+  hosts: all  # Uygulanacak hedef anahtarları belirtin
+  become: yes  # Sudo yetkilerini kullanmak için
+  tasks:
+    - name: Zaman Dilimi Ayarla
+      command: timedatectl set-timezone Europe/Istanbul
